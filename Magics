@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --accent: #38bdf8;
+    --accent-dark: #0284c7;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --error: #f87171;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: var(--text);
+  }
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  }
+  h1 {
+    margin: 0 0 8px;
+    font-size: 24px;
+  }
+  p.subtitle {
+    color: var(--muted);
+    margin: 0 0 28px;
+    font-size: 14px;
+  }
+  label {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    margin-top: 16px;
+  }
+  input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input:focus {
+    border-color: var(--accent);
+  }
+  .error {
+    color: var(--error);
+    font-size: 12px;
+    margin-top: 4px;
+    min-height: 16px;
+  }
+  button {
+    width: 100%;
+    margin-top: 28px;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #0f172a;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  button:hover { background: var(--accent-dark); color: white; }
+
+  /* Dashboard */
+  #dashboard { display: none; }
+  .welcome {
+    text-align: center;
+  }
+  .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 auto 16px;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #334155;
+    font-size: 14px;
+  }
+  .info-row span:first-child { color: var(--muted); }
+  .info-row:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+
+  <div class="card" id="formCard">
+    <h1>Crear cuenta</h1>
+    <p class="subtitle">Completa tus datos para continuar al dashboard</p>
+
+    <form id="registroForm" novalidate>
+      <label for="nombre">Nombre completo</label>
+      <input type="text" id="nombre" placeholder="Ej. Santiago Pérez">
+      <div class="error" id="err-nombre"></div>
+
+      <label for="edad">Edad</label>
+      <input type="number" id="edad" placeholder="Ej. 28" min="1" max="120">
+      <div class="error" id="err-edad"></div>
+
+      <label for="telefono">Teléfono</label>
+      <input type="tel" id="telefono" placeholder="Ej. 8671234567">
+      <div class="error" id="err-telefono"></div>
+
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" placeholder="Ej. nombre@correo.com">
+      <div class="error" id="err-email"></div>
+
+      <button type="submit">Continuar al dashboard</button>
+    </form>
+  </div>
+
+  <div class="card" id="dashboard">
+    <div class="welcome">
+      <div class="avatar" id="avatarInicial"></div>
+      <h1 id="saludo">¡Bienvenido!</h1>
+      <p class="subtitle">Este es tu resumen de cuenta</p>
+    </div>
+    <div class="info-row"><span>Nombre</span><span id="dashNombre"></span></div>
+    <div class="info-row"><span>Edad</span><span id="dashEdad"></span></div>
+    <div class="info-row"><span>Teléfono</span><span id="dashTelefono"></span></div>
+    <div class="info-row"><span>Correo</span><span id="dashEmail"></span></div>
+  </div>
+
+<script>
+  const form = document.getElementById('registroForm');
+
+  function limpiarErrores() {
+    document.querySelectorAll('.error').forEach(el => el.textContent = '');
+  }
+
+  function mostrarError(campo, mensaje) {
+    document.getElementById('err-' + campo).textContent = mensaje;
+  }
+
+  function validarTelefono(valor) {
+    const soloDigitos = valor.replace(/\D/g, '');
+    return soloDigitos.length >= 10;
+  }
+
+  function validarEmail(valor) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    limpiarErrores();
+
+    const nombre = document.getElementById('nombre').value.trim();
+    const edad = document.getElementById('edad').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    let valido = true;
+
+    if (nombre.length < 2) {
+      mostrarError('nombre', 'Ingresa tu nombre completo.');
+      valido = false;
+    }
+
+    if (!edad || edad <= 0 || edad > 120) {
+      mostrarError('edad', 'Ingresa una edad válida.');
+      valido = false;
+    }
+
+    if (!validarTelefono(telefono)) {
+      mostrarError('telefono', 'Ingresa un teléfono válido (mínimo 10 dígitos).');
+      valido = false;
+    }
+
+    if (!validarEmail(email)) {
+      mostrarError('email', 'Ingresa un correo electrónico válido.');
+      valido = false;
+    }
+
+    if (!valido) return;
+
+    // Aquí es donde normalmente enviarías los datos a tu backend (por ejemplo, un endpoint de FastAPI)
+    // fetch('/api/registro', { method: 'POST', body: JSON.stringify({ nombre, edad, telefono, email }) })
+
+    document.getElementById('dashNombre').textContent = nombre;
+    document.getElementById('dashEdad').textContent = edad;
+    document.getElementById('dashTelefono').textContent = telefono;
+    document.getElementById('dashEmail').textContent = email;
+    document.getElementById('avatarInicial').textContent = nombre.charAt(0).toUpperCase();
+    document.getElementById('saludo').textContent = '¡Bienvenido, ' + nombre.split(' ')[0] + '!';
+
+    document.getElementById('formCard').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
