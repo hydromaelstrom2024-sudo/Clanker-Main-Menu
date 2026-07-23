@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Registro y Dashboard</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f4f4; display:flex; justify-content:center; padding-top:60px; }
+  .card { background:#fff; padding:30px 40px; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.1); width:340px; }
+  h2 { margin-top:0; }
+  label { display:block; margin-top:14px; font-size:14px; color:#333; }
+  input { width:100%; padding:8px; margin-top:4px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box; }
+  button { margin-top:22px; width:100%; padding:10px; background:#2563eb; color:#fff; border:none; border-radius:6px; font-size:15px; cursor:pointer; }
+  button:hover { background:#1d4ed8; }
+  .error { color:#dc2626; font-size:13px; margin-top:10px; display:none; }
+  #dashboard { display:none; }
+  .dato { margin:10px 0; font-size:15px; }
+  .dato span { font-weight:bold; }
+</style>
+</head>
+<body>
+
+<div class="card" id="formulario">
+  <h2>Registro</h2>
+  <label>Nombre</label>
+  <input type="text" id="nombre" placeholder="Tu nombre completo">
+
+  <label>Edad</label>
+  <input type="number" id="edad" placeholder="Tu edad">
+
+  <label>Teléfono</label>
+  <input type="tel" id="telefono" placeholder="Ej. 8671234567">
+
+  <label>Correo electrónico</label>
+  <input type="email" id="correo" placeholder="tucorreo@ejemplo.com">
+
+  <div class="error" id="mensajeError">Por favor completa todos los campos correctamente.</div>
+
+  <button onclick="enviarFormulario()">Continuar al Dashboard</button>
+</div>
+
+<div class="card" id="dashboard">
+  <h2>Bienvenido a tu Dashboard</h2>
+  <div class="dato">Nombre: <span id="dNombre"></span></div>
+  <div class="dato">Edad: <span id="dEdad"></span></div>
+  <div class="dato">Teléfono: <span id="dTelefono"></span></div>
+  <div class="dato">Correo: <span id="dCorreo"></span></div>
+  <button onclick="cerrarSesion()">Salir</button>
+</div>
+
+<script>
+function enviarFormulario() {
+  const nombre = document.getElementById('nombre').value.trim();
+  const edad = document.getElementById('edad').value.trim();
+  const telefono = document.getElementById('telefono').value.trim();
+  const correo = document.getElementById('correo').value.trim();
+  const errorDiv = document.getElementById('mensajeError');
+
+  const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
+  const telefonoValido = /^[0-9\s\-\+\(\)]{7,15}$/.test(telefono);
+
+  if (!nombre || !edad || !telefono || !correo || !correoValido || !telefonoValido || edad <= 0) {
+    errorDiv.style.display = 'block';
+    return;
+  }
+  errorDiv.style.display = 'none';
+
+  document.getElementById('dNombre').textContent = nombre;
+  document.getElementById('dEdad').textContent = edad;
+  document.getElementById('dTelefono').textContent = telefono;
+  document.getElementById('dCorreo').textContent = correo;
+
+  document.getElementById('formulario').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+}
+
+function cerrarSesion() {
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('formulario').style.display = 'block';
+  document.getElementById('nombre').value = '';
+  document.getElementById('edad').value = '';
+  document.getElementById('telefono').value = '';
+  document.getElementById('correo').value = '';
+}
+</script>
+
+</body>
+</html>
