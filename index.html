@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro de Acceso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- PANTALLA 1: FORMULARIO -->
+  <main id="pantalla-formulario" class="pantalla activa">
+    <div class="tarjeta">
+      <div class="eyebrow">REGISTRO · 01</div>
+      <h1>Antes de entrar,<br>necesito tus datos.</h1>
+      <p class="subtitulo">Se usarán para armar tu panel personal.</p>
+
+      <form id="formulario-registro" novalidate>
+        <div class="campo">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" placeholder="Santiago Pérez" required>
+          <span class="error" data-error-para="nombre"></span>
+        </div>
+
+        <div class="campo">
+          <label for="edad">Edad</label>
+          <input type="number" id="edad" name="edad" placeholder="28" min="1" max="120" required>
+          <span class="error" data-error-para="edad"></span>
+        </div>
+
+        <div class="campo">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" placeholder="+52 867 123 4567" required>
+          <span class="error" data-error-para="telefono"></span>
+        </div>
+
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" placeholder="tu@correo.com" required>
+          <span class="error" data-error-para="correo"></span>
+        </div>
+
+        <button type="submit" class="boton-primario">Entrar al panel →</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- PANTALLA 2: DASHBOARD -->
+  <main id="pantalla-dashboard" class="pantalla">
+    <div class="panel">
+      <div class="panel-encabezado">
+        <div class="eyebrow">PANEL · 02</div>
+        <button id="boton-salir" class="boton-secundario">Cerrar sesión</button>
+      </div>
+
+      <h1>Hola, <span id="saludo-nombre">—</span>.</h1>
+      <p class="subtitulo">Tu información quedó registrada correctamente.</p>
+
+      <div class="rejilla-datos">
+        <div class="dato">
+          <span class="dato-etiqueta">NOMBRE</span>
+          <span class="dato-valor" id="dato-nombre">—</span>
+        </div>
+        <div class="dato">
+          <span class="dato-etiqueta">EDAD</span>
+          <span class="dato-valor" id="dato-edad">—</span>
+        </div>
+        <div class="dato">
+          <span class="dato-etiqueta">TELÉFONO</span>
+          <span class="dato-valor" id="dato-telefono">—</span>
+        </div>
+        <div class="dato">
+          <span class="dato-etiqueta">CORREO</span>
+          <span class="dato-valor" id="dato-correo">—</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
